@@ -8,12 +8,15 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func RegisterHealthCheck(router *mux.Router, modules ...*Module) {
+func RegisterHealthCheck(router *mux.Router, modules ...*Module) (*mux.Router) {
 	healthCheck := &HealthCheck{Status: Up}
 	healthCheck.Modules = append(healthCheck.Modules, modules...)
 	router.
 		HandleFunc("/health", heathCheckHandler(healthCheck)).
 		Methods("GET")
+
+	return router
+
 }
 
 func heathCheckHandler(healthCheck *HealthCheck) func(w http.ResponseWriter, r *http.Request) {
