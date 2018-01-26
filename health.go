@@ -8,6 +8,7 @@ const (
 type HealthCheckStatus string
 
 type HealthCheck struct {
+
 	Status  HealthCheckStatus `json:"status"`
 	Modules []*Module         `json:"modules,omitempty"`
 }
@@ -29,6 +30,7 @@ func NewModule(name string, healthChecker HealthChecker) *Module {
 
 // process the health check on all modules
 func (healthCheck *HealthCheck) process() {
+	healthCheck.Status = Up
 	numberOfModules := len(healthCheck.Modules)
 	moduleStatusChannel := make(chan HealthCheckStatus, numberOfModules)
 	for _, module := range healthCheck.Modules {
